@@ -64,7 +64,9 @@ PSNRDSPContext;
 void ff_psnr_init_x86 (PSNRDSPContext *dsp, int bpp);
 
 /* SIMD functions included here */
+#ifdef __AVX2__
 #include <x86intrin.h>
+#endif
 
 #define _mm_storeu_si16(p, a) (void)(*(short*)(p) = (short)_mm_cvtsi128_si32((a)))
 
