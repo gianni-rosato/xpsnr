@@ -43,25 +43,28 @@ under Linux & macOS.
 Please also see https://trac.ffmpeg.org/wiki/CompilationGuide for a
 more detailed explanation of the steps required to compile FFmpeg.
 
-First, you need to obtain the latest revision of the *FFmpeg 6.0*
-source code from its Git repository:
+First, you need to obtain the latest revision of the *FFmpeg 6.0.1*
+source code from FFmpeg's site:
 
 ```
-git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
+curl -OJ https://ffmpeg.org/releases/ffmpeg-6.0.1.tar.xz
 ```
 
-Then, cd into the directory with the cloned source & reset to the
-compatible commit:
+If you would like, you can also check the [signature file](https://ffmpeg.org/releases/ffmpeg-6.0.1.tar.xz.asc).
+
+Then, extract the source archive with `tar` & change the name of the directory so it matches up with the rest of these instructions:
 
 ```
-cd ffmpeg
-git reset --hard c5039e158d20e85d4d8a2dee3160533d627b839a
+tar -xvf ffmpeg-6.0.1.tar.xz
+mv ffmpeg-6.0.1 ffmpeg_xpsnr
 ```
 
 Then, you need to copy the files inside the `libavfilter` directory
 of this source distribution into FFmpeg's `libavfilter` directory:
 
-`cp xpsnr/libavfilter/* ffmpeg/libavfilter/`
+```
+cp xpsnr/libavfilter/* ffmpeg_xpsnr/libavfilter/
+```
 
 Note that the `allfilters.c` and `Makefile` files already exist in
 the FFmpeg source distribution and will be replaced (XPSNR-related
@@ -75,7 +78,7 @@ CPUs speeds up XPSNR dramatically.
 
 ```
 ./configure --extra-cflags=-mavx2
-make
+make -j$(nproc)
 ```
 
 If the `--extra-cflags=...` option does not work, you may omit it.
